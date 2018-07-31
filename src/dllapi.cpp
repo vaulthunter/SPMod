@@ -156,6 +156,7 @@ static void ServerActivatePost(edict_t *pEdictList [[maybe_unused]],
 
     const std::unique_ptr<PluginMngr> &pluginManager = gSPGlobal->getPluginManagerCore();
 
+    pluginManager->addDefaultNatives();
     pluginManager->setPluginPrecache(true);
     pluginManager->loadPlugins();
     pluginManager->setPluginPrecache(false);
@@ -167,16 +168,17 @@ static void ServerDeactivatePost()
     using def = ForwardMngr::FwdDefault;
 
     const std::unique_ptr<ForwardMngr> &fwdMngr = gSPGlobal->getForwardManagerCore();
-
     fwdMngr->getDefaultForward(def::PluginEnd)->execFunc(nullptr);
+    fwdMngr->clearForwards();
 
-    gSPGlobal->getPluginManagerCore()->clearPlugins();
+    const std::unique_ptr<PluginMngr> &plMngr = gSPGlobal->getPluginManagerCore();
+    plMngr->clearPlugins();
+    plMngr->clearNatives();
+
     gSPGlobal->getTimerManagerCore()->clearTimers();
     gSPGlobal->getCommandManagerCore()->clearCommands();
     gSPGlobal->getCvarManagerCore()->clearCvarsCallback();
-    fwdMngr->clearForwards();
     gSPGlobal->getLoggerCore()->resetErrorState();
-    gSPGlobal->getNativeManagerCore()->freeFakeNatives();
     uninstallRehldsHooks();
 }
 
