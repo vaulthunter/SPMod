@@ -171,3 +171,4 @@ includeDirs = include_directories(publicIncludesDir,
                                   '.') #build directory
 
 subdir('src')
+subdir('exts')
