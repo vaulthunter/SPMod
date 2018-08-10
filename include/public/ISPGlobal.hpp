@@ -158,16 +158,16 @@ namespace SPMod
                                           std::size_t param) const = 0;
 
         /**
-         * @brief Registers new interface.
+         * @brief Registers module's interface.
          *
-         * @param interface     Address to interface.
+         * @param interface     Interface's address.
          *
          * @return              True if registered successfully, false otherwise.
          */
         virtual bool registerInterface(IInterface *interface) = 0;
 
         /**
-         * @brief Gets an interface.
+         * @brief Gets a module's interface.
          *
          * @param name          Name of the interface to look up for.
          *
