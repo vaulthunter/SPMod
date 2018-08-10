@@ -106,6 +106,7 @@ using namespace SPMod;
 #include "CvarSystem.hpp"
 #include "CmdSystem.hpp"
 #include "TimerSystem.hpp"
+#include "ExtensionSystem.hpp"
 #include "SPGlobal.hpp"
 
 constexpr auto gSPModAuthor = "SPMod Development Team";

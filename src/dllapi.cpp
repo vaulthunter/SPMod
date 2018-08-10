@@ -157,6 +157,9 @@ static void ServerActivatePost(edict_t *pEdictList [[maybe_unused]],
     const std::unique_ptr<PluginMngr> &pluginManager = gSPGlobal->getPluginManagerCore();
 
     pluginManager->addDefaultNatives();
+
+    gSPGlobal->loadExts();
+
     pluginManager->setPluginPrecache(true);
     pluginManager->loadPlugins();
     pluginManager->setPluginPrecache(false);
@@ -167,13 +170,15 @@ static void ServerDeactivatePost()
 {
     using def = ForwardMngr::FwdDefault;
 
-    const std::unique_ptr<ForwardMngr> &fwdMngr = gSPGlobal->getForwardManagerCore();
-    fwdMngr->getDefaultForward(def::PluginEnd)->execFunc(nullptr);
-    fwdMngr->clearForwards();
-
     const std::unique_ptr<PluginMngr> &plMngr = gSPGlobal->getPluginManagerCore();
     plMngr->clearPlugins();
     plMngr->clearNatives();
+
+    gSPGlobal->unloadExts();
+
+    const std::unique_ptr<ForwardMngr> &fwdMngr = gSPGlobal->getForwardManagerCore();
+    fwdMngr->getDefaultForward(def::PluginEnd)->execFunc(nullptr);
+    fwdMngr->clearForwards();
 
     gSPGlobal->getTimerManagerCore()->clearTimers();
     gSPGlobal->getCommandManagerCore()->clearCommands();
