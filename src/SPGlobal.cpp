@@ -199,9 +199,15 @@ void SPGlobal::_initSourcePawn()
     getSPEnvironment()->APIv2()->SetJitEnabled(true);
 }
 
-const char *SPGlobal::getHome() const
+const char *SPGlobal::getHomeDir() const
 {
-    return m_SPModDir.c_str();
+#if defined SP_POSIX
+    return getHomeDirCore().c_str();
+#else
+    static std::string tempDir;
+    tempDir = getHomeDirCore().string();
+    return tempDir.c_str();
+#endif
 }
 
 const char *SPGlobal::getModName() const
@@ -252,9 +258,9 @@ IInterface *SPGlobal::getInterface(const char *name) const
     return nullptr;
 }
 
-std::string_view SPGlobal::getHomeCore() const
+fs::path SPGlobal::getHomeDirCore() const
 {
-    return m_SPModDir.string();
+    return m_SPModDir;
 }
 
 std::string_view SPGlobal::getModNameCore() const
